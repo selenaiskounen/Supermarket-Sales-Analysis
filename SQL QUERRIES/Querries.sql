@@ -19,7 +19,7 @@ FROM sales --1000
 SELECT AVG(Selling_price_per_unit) AS avg_depense
 FROM sales  -- 61.11
 
--- SEGMENTATION OF SALES
+-- SALES SEGMENTATION
 -- City which generate the highest revenue
 
 SELECT d.City,
@@ -82,13 +82,81 @@ FROM (
 ORDER BY c.nb_sales DESC
 LIMIT 1;
 
--- Paiement methods 
+-- Revenue by branch
+SELECT d.Branch,
+       d.revenue_branch
+FROM(
+SELECT 
+  db.Branch,
+  db.total_branch,
+  db.tax_branch,
+  (db.total_branch + db.tax_branch) AS revenue_branch
+FROM (
+  SELECT 
+    Branch, 
+    SUM(Total) AS total_branch,
+    SUM(Tax) AS tax_branch
+  FROM sales 
+  GROUP BY Branch
+) AS db) AS d
+ORDER BY revenue_branch DESC;
+
+
+
+
+-- PAIEMENT METHODS AND CLIENT BEHAVIOR
+
+-- Which is the most paiement methods used?
+
+SELECT 
+      a.Payment,
+      a.count_payment
+FROM(
+   SELECT 
+     Payment,
+    COUNT(*) AS count_payment
+   FROM sales
+   GROUP BY Payment
+   ORDER BY count_payment DESC
+ )AS a
+ ORDER BY a.count_payment
+ LIMIT 1;
+
+
+-- Le montant moyen des ventes varit-il selon les modes de paiments
+
 SELECT 
   Payment,
-  COUNT(*) AS count_payment
+  AVG(Total) AS avg_total_per_payment
 FROM sales
 GROUP BY Payment
-ORDER BY count_payment DESC;
+ORDER BY avg_total_per_payment DESC;
+
+-- Is there a link between the product and the rate 
+
+SELECT 
+  c.ProductLine,
+  c.rate,
+  c.nb_sales
+FROM (
+  SELECT 
+    ProductLine, 
+    AVG(Rating) AS rate,
+    SUM(Quantity) AS nb_sales
+  FROM sales 
+  GROUP BY ProductLine
+) AS c
+ORDER BY c.nb_sales DESC;
 
 
+-- TEMPORAL ANALYSIS
+
+-- Revenue per month
+
+SELECT 
+  MONTH(Date) AS months,
+  SUM(Total) AS total_revenue
+FROM sales
+GROUP BY months
+ORDER BY total_revenue DESC;
 
