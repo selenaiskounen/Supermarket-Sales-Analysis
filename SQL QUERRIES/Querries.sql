@@ -123,7 +123,7 @@ FROM(
  LIMIT 1;
 
 
--- Le montant moyen des ventes varit-il selon les modes de paiments
+-- Does the average sales amount vary depending on the payment methods?
 
 SELECT 
   Payment,
