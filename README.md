@@ -7,6 +7,7 @@ This project showcases SQL skills through the analysis of a supermarket's transa
 - MySQL
 - VSCODE
 - SQL queries (GROUP BY, ORDER BY, CTe)
+- Python (matplotlib, seaborn)
 
 ## 📌 Key Insights
 
@@ -17,9 +18,9 @@ This project showcases SQL skills through the analysis of a supermarket's transa
 
 ## 🗂️ Files
 
-- `create_tables.sql` : Table structure
-- `insert_data.sql` : Load dataset into DB
-- `exploratory_analysis.sql` : First insights
-- `advanced_queries.sql` : KPIs and business questions
+- `CREATE TABLE` : Table structure
+- `INSERT DATA` : Load dataset into DB
+- `EXPLORATORY ANALYSIS` :KPIs and business questions
+- `VISUALS` : Visualization of analysis
 
 
