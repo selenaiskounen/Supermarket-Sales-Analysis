@@ -4,15 +4,15 @@ This project showcases SQL skills through the analysis of a supermarket's transa
 
 ## 🔧 Tools
 
-- SQLite / PostgreSQL
-- DB Browser for SQLite (or pgAdmin)
-- SQL queries (JOINs, GROUP BY, CTEs, CASE)
+- MySQL
+- VSCODE
+- SQL queries (GROUP BY, ORDER BY, CTe)
 
 ## 📌 Key Insights
 
 - Total revenue by city
 - Most popular product categories
-- Peak hours and best-performing days
+- Best-performing months
 - Payment method distribution
 
 ## 🗂️ Files
