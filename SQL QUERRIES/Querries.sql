@@ -1,4 +1,6 @@
 -- GLOBAL QUESTIONS
+
+
 -- REVENUE HT
 SELECT SUM(TOTAL) AS Revenue_HT 
 FROM sales  -- 337614.46
@@ -20,8 +22,8 @@ SELECT AVG(Selling_price_per_unit) AS avg_depense
 FROM sales  -- 61.11
 
 -- SALES SEGMENTATION
--- City which generate the highest revenue
 
+-- City which generate the highest revenue
 SELECT d.City,
        d.revenue_city 
 FROM(
@@ -41,7 +43,6 @@ FROM (
 ORDER BY revenue_city DESC;
 
 -- Which gender spend most 
-
 SELECT d.Gender,
        d.revenue_gender
 FROM(
@@ -61,7 +62,6 @@ FROM (
 ORDER BY revenue_gender DESC;
 
 -- Number of sales by product
-
 SELECT ProductLine, 
       SUM(Quantity) AS nb_sales
 FROM sales 
@@ -107,7 +107,6 @@ ORDER BY revenue_branch DESC;
 -- PAIEMENT METHODS AND CLIENT BEHAVIOR
 
 -- Which is the most paiement methods used?
-
 SELECT 
       a.Payment,
       a.count_payment
@@ -124,7 +123,6 @@ FROM(
 
 
 -- Does the average sales amount vary depending on the payment methods?
-
 SELECT 
   Payment,
   AVG(Total) AS avg_total_per_payment
@@ -133,7 +131,6 @@ GROUP BY Payment
 ORDER BY avg_total_per_payment DESC;
 
 -- Is there a link between the product and the rate 
-
 SELECT 
   c.ProductLine,
   c.rate,
@@ -152,11 +149,55 @@ ORDER BY c.nb_sales DESC;
 -- TEMPORAL ANALYSIS
 
 -- Revenue per month
-
 SELECT 
   MONTH(Date) AS months,
   SUM(Total) AS total_revenue
 FROM sales
 GROUP BY months
 ORDER BY total_revenue DESC;
+
+
+-- Top product by city with revenue and market share
+WITH product_revenue AS (
+    SELECT 
+        City,
+        ProductLine,
+        SUM(Total) AS product_total
+    FROM sales
+    GROUP BY City, ProductLine
+),
+city_revenue AS (
+    SELECT 
+        City,
+        SUM(Total) AS city_total
+    FROM sales
+    GROUP BY City
+)
+SELECT 
+    pr.City,
+    pr.ProductLine,
+    pr.product_total,
+    ROUND((pr.product_total / cr.city_total) * 100, 2) AS market_share
+FROM product_revenue pr
+JOIN city_revenue cr ON pr.City = cr.City
+WHERE pr.ProductLine = (
+    SELECT ProductLine
+    FROM product_revenue pr2
+    WHERE pr2.City = pr.City
+    ORDER BY pr2.product_total DESC
+    LIMIT 1
+);
+
+-- Monthly revenue trend by product type.
+SELECT 
+    ProductLine,
+    MONTH(Date) AS month,
+    SUM(Total) AS monthly_revenue
+FROM sales
+GROUP BY ProductLine, month
+ORDER BY ProductLine, FIELD(month, 'January','February','March');
+
+
+
+
 
